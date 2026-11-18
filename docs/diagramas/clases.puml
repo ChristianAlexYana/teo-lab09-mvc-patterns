@@ -1,0 +1,66 @@
+@startuml clases
+title Seguimiento académico - Clases (avance 30%)
+skinparam classAttributeIconSize 0
+
+package "Vista (Qt)" {
+  class MainWindow {
+    +mostrarFilas(filas)
+    +mostrarMensaje(texto, esError)
+    <<signal>> crearSolicitado(...)
+  }
+}
+
+package "Controlador" {
+  class ActividadController {
+    +crear(DatosActividad): Resultado
+    +listar(): vector<FilaActividad>
+    +alCambiar(observador)
+  }
+  class FilaActividad <<DTO>>
+}
+
+package "Modelo" {
+  interface IRepositorio {
+    +siguienteId(): int
+    +agregar(ActividadPtr)
+    +listar(): vector<ActividadPtr>
+    +cantidad(): size_t
+  }
+  class RepositorioActividades
+  class RepositorioCsvAdapter <<pendiente>> #DDDDDD
+
+  abstract class Actividad {
+    +id() +titulo() +curso() +fechaEntrega()
+    +{abstract} tipo()
+    +{abstract} detalle()
+  }
+  class Tarea
+  class Examen
+  class Proyecto
+
+  abstract class ActividadCreator <<Creator>> {
+    +crear(id, datos): unique_ptr<Actividad>
+    #{abstract} crearActividad(id, datos)
+  }
+  class TareaCreator
+  class ExamenCreator
+  class ProyectoCreator
+}
+
+MainWindow ..> ActividadController : señales/ranuras (vía main.cpp)
+ActividadController --> IRepositorio
+ActividadController ..> ActividadCreator : crearCreador(tipo)
+ActividadController ..> FilaActividad : devuelve copias
+IRepositorio <|.. RepositorioActividades
+IRepositorio <|.. RepositorioCsvAdapter
+IRepositorio o-- Actividad
+Actividad <|-- Tarea
+Actividad <|-- Examen
+Actividad <|-- Proyecto
+ActividadCreator <|-- TareaCreator
+ActividadCreator <|-- ExamenCreator
+ActividadCreator <|-- ProyectoCreator
+TareaCreator ..> Tarea : <<create>>
+ExamenCreator ..> Examen : <<create>>
+ProyectoCreator ..> Proyecto : <<create>>
+@enduml

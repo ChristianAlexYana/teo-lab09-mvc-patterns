@@ -1,0 +1,32 @@
+@startuml secuencia_crear
+title Flujo "crear actividad"
+actor Usuario
+participant MainWindow as V
+participant "main.cpp\n(conexión)" as M
+participant ActividadController as C
+participant "crearCreador()" as F
+participant ActividadCreator as Cr
+participant IRepositorio as R
+
+Usuario -> V : clic "Agregar"
+V -> M : crearSolicitado(tipo, titulo, ...)
+M -> C : crear(DatosActividad)
+C -> F : crearCreador(tipo)
+F --> C : creador concreto
+C -> R : siguienteId()
+C -> Cr : crear(id, datos)
+Cr -> Cr : validar comunes
+Cr -> Cr : crearActividad() [Factory Method]
+alt datos inválidos
+  Cr --> C : DatosInvalidos
+  C --> M : Resultado{ok=false, mensaje}
+  M -> V : mostrarMensaje(error)
+else datos válidos
+  Cr --> C : unique_ptr<Actividad>
+  C -> R : agregar(actividad)
+  C -> M : observador()
+  M -> C : listar()
+  C --> M : vector<FilaActividad>
+  M -> V : mostrarFilas(filas)
+end
+@enduml

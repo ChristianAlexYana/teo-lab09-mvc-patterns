@@ -1,0 +1,2 @@
+/usr/bin/ar qc libnucleo.a CMakeFiles/nucleo.dir/src/controller/ActividadController.cpp.o CMakeFiles/nucleo.dir/src/model/Actividad.cpp.o CMakeFiles/nucleo.dir/src/model/ActividadCreator.cpp.o CMakeFiles/nucleo.dir/src/model/DatosActividad.cpp.o CMakeFiles/nucleo.dir/src/model/RepositorioActividades.cpp.o
+/usr/bin/ranlib libnucleo.a

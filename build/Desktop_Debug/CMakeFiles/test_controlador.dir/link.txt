@@ -1,0 +1,1 @@
+/usr/bin/g++ -g -Wl,--dependency-file=CMakeFiles/test_controlador.dir/link.d CMakeFiles/test_controlador.dir/tests/test_controlador.cpp.o -o test_controlador  libnucleo.a

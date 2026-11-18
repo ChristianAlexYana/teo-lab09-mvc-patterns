@@ -1,0 +1,15 @@
+@startuml secuencia_cargar_csv
+title Flujo "cargar CSV heredado" (PENDIENTE - Adapter)
+participant ActividadController as C
+participant "IRepositorio" as R
+participant RepositorioCsvAdapter as A
+participant "LectorCsvHeredado" as L
+
+C -> R : listar()
+R -> A : listar()
+A -> L : leerRegistros()
+L --> A : filas con estructura antigua
+A -> A : traducir fila -> DatosActividad\n+ ActividadCreator.crear()
+A --> C : vector<ActividadPtr>
+note over A : Por implementar en la siguiente etapa.
+@enduml

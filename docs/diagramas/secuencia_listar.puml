@@ -1,0 +1,17 @@
+@startuml secuencia_listar
+title Flujo "listar actividades"
+participant "main.cpp\n(conexión)" as M
+participant ActividadController as C
+participant IRepositorio as R
+participant MainWindow as V
+
+M -> C : listar()
+C -> R : listar()
+R --> C : vector<shared_ptr<const Actividad>>
+loop por cada actividad
+  C -> C : construir FilaActividad (copia)
+end
+C --> M : vector<FilaActividad>
+M -> V : mostrarFilas(filas)
+note right of V : La Vista solo recibe copias;\nno puede modificar el Modelo.
+@enduml
